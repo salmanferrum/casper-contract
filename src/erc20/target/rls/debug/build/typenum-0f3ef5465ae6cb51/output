@@ -1,0 +1,2 @@
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/mac/Downloads/SolRust/rust_sol/src/erc20/target/rls/debug/build/typenum-0f3ef5465ae6cb51/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/Users/mac/Downloads/SolRust/rust_sol/src/erc20/target/rls/debug/build/typenum-0f3ef5465ae6cb51/out/op.rs

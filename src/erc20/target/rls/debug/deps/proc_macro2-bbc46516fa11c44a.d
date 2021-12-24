@@ -1,0 +1,12 @@
+/Users/mac/Downloads/SolRust/rust_sol/src/erc20/target/rls/debug/deps/proc_macro2-bbc46516fa11c44a.rmeta: /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/lib.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/marker.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/parse.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/detection.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/fallback.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/wrapper.rs
+
+/Users/mac/Downloads/SolRust/rust_sol/src/erc20/target/rls/debug/deps/libproc_macro2-bbc46516fa11c44a.rlib: /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/lib.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/marker.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/parse.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/detection.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/fallback.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/wrapper.rs
+
+/Users/mac/Downloads/SolRust/rust_sol/src/erc20/target/rls/debug/deps/proc_macro2-bbc46516fa11c44a.d: /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/lib.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/marker.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/parse.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/detection.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/fallback.rs /Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/wrapper.rs
+
+/Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/lib.rs:
+/Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/marker.rs:
+/Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/parse.rs:
+/Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/detection.rs:
+/Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/fallback.rs:
+/Users/mac/.cargo/registry/src/github.com-1ecc6299db9ec823/proc-macro2-1.0.34/src/wrapper.rs:

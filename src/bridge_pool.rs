@@ -6,25 +6,44 @@
 // import "../common/SafeAmount.sol";
 // import "../token/TaxDistributor.sol";
 
-use bigint::U256;
+// extern crate bigint;
+// use bigint::U256;
 use std::collections::HashMap;
+extern crate alloc;
+use alloc::string::String;
+use secp256k1::Secp256k1;
+use crate::crypto_utils::EcdsaSig;
+use crate::crypto_utils::ecdsa_recover;
+
+use casper_contract::{contract_api::runtime, unwrap_or_revert::UnwrapOrRevert};
+use casper_erc20::{
+    constants::{
+        ADDRESS_RUNTIME_ARG_NAME, AMOUNT_RUNTIME_ARG_NAME, DECIMALS_RUNTIME_ARG_NAME,
+        NAME_RUNTIME_ARG_NAME, OWNER_RUNTIME_ARG_NAME, RECIPIENT_RUNTIME_ARG_NAME,
+        SPENDER_RUNTIME_ARG_NAME, SYMBOL_RUNTIME_ARG_NAME, TOTAL_SUPPLY_RUNTIME_ARG_NAME,
+    },
+    Address, ERC20,
+};
+use casper_types::{CLValue, U256};
 
 
 // I don't have access to this interface/trait
 #[allow(dead_code)]
 
 // you can change the number of bytes or completely the type
-type Address = [u8; 32];
+type SignerAddress = [u8; 32];
 type Bytes = [u8; 32];
+type Bytes8 = [u8];
 type Liquidity = HashMap<Address, HashMap<Address, U256>>;
 const ZERO_ADDRESS: [u8; 32] = [0u8; 32]; // address(0)
 const ZERO: U256 = U256::from(0);
+const TEN_THOUSAND: U256 = U256::from(10000);
 const NAME: &'static str = "FERRUM_TOKEN_BRIDGE_POOL";
 const VERSION: &'static str = "000.001";
 
 #[derive(Debug)]
 pub struct BridgePool {
-    signer: Address,
+    signer: SignerAddress,
     usedHashes: HashMap<Bytes, bool>,
     fees: HashMap<Address, U256>,
     feeDistributor: Address,
@@ -95,8 +114,10 @@ impl BridgePool {
         target_address: Address
     ) -> U256 {
     let fees = self.fees.get(&token).unwrap();
-    let zero = U256::from(0);
-    let ten_thousand = U256::from(10000);
+    let zero_0: i32 = 0;
+    let ten_000: i32 = 10000;
+    let zero: U256 = U256::from(zero_0);
+    let ten_thousand = U256::from(ten_000);
 
     let actual_amount: U256 = amount;
     let mut fee;
@@ -124,20 +145,6 @@ pub fn add_liquidity(&mut self, sender: Address, token: Address, amount: U256) -
     }
     // amount = SafeAmount.safeTransferFrom(token, msg.sender, address(this), amount);
 
-
-    // let mut liquidities: HashMap<Address, HashMap<Address, U256>> = HashMap::default();
-    // let key = [5; 32];
-    // let inner_key = [1; 32];
-    // let some_amount = 45.into();
-
-    // if let Some(inner_map) = liquidities.get_mut(&key) {
-    // let zero = U256::from(0);
-    // let inner_value = inner_map.get(&inner_key).unwrap_or(&zero);
-    // let result = inner_value.add(some_amount);
-
-    // let _ = inner_map.insert(inner_key, result);
-    // }
-
     if let Some(inner_hash_map) =  self.liquidities.get_mut(&token) {
         let inner_hash_value = inner_hash_map.get(&sender).unwrap_or(&ZERO);
         let result = *inner_hash_value + amount;
@@ -164,7 +171,9 @@ pub fn remove_liquidity_ifpossible(
     if liq <= &amount {
         return Err("Not enough Liquidity".into());
     }
-    // let balance: U256 = IERC20(token).balanceOf(address(this));
+    
+    let balance = ERC20::default().balance_of(sender);
+    // let balance: U256 = ERC20(&token).balanceOf(sender);
 
     // uint256 actualLiq = balance > amount ? amount : balance;
     let actual_liq = if balance > amount { amount } else { balance };
@@ -203,16 +212,20 @@ pub fn withdraw_signed(
     payee: Address,
     amount: U256,
     salt: Bytes,
-    signature: Bytes
-) -> Result<(), String> {
+    signature: &[u8]
+) -> Result<Bytes, String> {
     let digest: Bytes;
-    // bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
-    //     keccak256("WithdrawSigned(address token, address payee,uint256 amount,bytes32 salt)"),
-    //     token, payee, amount, salt)));
+
+
+    // digest = _hashTypedDataV4(keccak256(abi.encode(
+    //   keccak256("WithdrawSigned(address token, address payee,uint256 amount,bytes32 salt)"),
+    //      token, payee, amount, salt)));
+
     if !self.usedHashes.get(&digest).unwrap() { 
         return Err("Message already used".into());
     }
-    // let _signer: Address = ECDSA.recover(digest, signature);  // if we can use ECDSA Openzepplin interface
+    let sig = EcdsaSig::from(signature).unwrap();
+    let _signer = ecdsa_recover(&digest, &sig).unwrap();  // if we can use ECDSA Openzepplin interface
     
     if _signer != self.signer {
         return Err("Bridge Pool: Invalid Signer".into());
@@ -222,7 +235,7 @@ pub fn withdraw_signed(
     // IERC20(token).safeTransfer(payee, amount);
     // emit TransferBySignature(digest, _signer, payee, token, amount);
 
-    Ok(())
+   Ok(digest)
 }
 
 }
