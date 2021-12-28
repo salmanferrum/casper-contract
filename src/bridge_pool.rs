@@ -14,6 +14,7 @@ use alloc::string::String;
 use secp256k1::Secp256k1;
 use crate::crypto_utils::EcdsaSig;
 use crate::crypto_utils::ecdsa_recover;
+use crate::crypto_utils::keccak256_hash;
 
 use casper_contract::{contract_api::runtime, unwrap_or_revert::UnwrapOrRevert};
 use casper_erc20::{
@@ -220,6 +221,11 @@ pub fn withdraw_signed(
     // digest = _hashTypedDataV4(keccak256(abi.encode(
     //   keccak256("WithdrawSigned(address token, address payee,uint256 amount,bytes32 salt)"),
     //      token, payee, amount, salt)));
+
+        let digest_keccak = (("WithdrawSigned(address token, address payee,uint256 amount,bytes32 salt)"),
+         token, payee, amount, salt);
+
+         digest = keccak256_hash(digest_keccak);
 
     if !self.usedHashes.get(&digest).unwrap() { 
         return Err("Message already used".into());
